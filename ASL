@@ -14,7 +14,7 @@ import time
 from resizeimage import resizeimage
 from PIL import Image
 
-# this method is used just for previewing!
+# THE FOLLOWING METHOD IS USED FOR PREVIEWING 
 
 
 def preview_unique():
@@ -112,19 +112,19 @@ def label_data():
             elif folder == 'nothing':
                 labels.append(labels_dict['nothing'])
 
-    images = np.array(images) # numpy array for meme magic
-    images = images.astype('float32')/255.0 # normalizes image pixels to range [0, 1]
+    images = np.array(images) # numpy array 
+    images = images.astype('float32')/255.0 # normalizes image pixels to range [0, 1] for processing
 
     templabels = labels
 
     labels = keras.utils.to_categorical(labels)
 
-    X_train, X_test, Y_train, Y_test = train_test_split(images, labels, test_size=0.05)  # automatically splits into train and test set!
+    X_train, X_test, Y_train, Y_test = train_test_split(images, labels, test_size=0.05)  # automatically splits into training and testing set!
     # note: parameter test_size = the percentage of your data that is in the test set
-    # x is vector of what you know (images) and y is what you're trying to predict (class name, A, B,  C)
+    # x is vector of what you know (images) and y is what you're trying to predict (class name, A, B, C, etc)
     # y test and y train stores all actual data. x data is used for training
 
-    print() # just prints an empty new line for spacing
+    print() # empty new line for spacing
     print('Loaded', len(X_train),'images for training,','Train data shape =',X_train.shape)
     print('Loaded', len(X_test),'images for testing','Test data shape =',X_test.shape)
 
@@ -134,8 +134,7 @@ def label_data():
 def create_model():
     print("CREATING MODEL NOW")
     model = Sequential()
-    # see what Conv2D (connects part of image to another part of the image somewhere else.
-    # not connected to the whole thing, every point doesn't connect to every other. the parameters?
+    # Conv2D connects part of image to another part of the image somewhere else.
     model.add(Conv2D(16, kernel_size=[3, 3], padding='same', activation='relu', input_shape=(64, 64, 3)))
     print("FIRST LAYER CREATED")
     model.add(Conv2D(32, kernel_size=[3, 3], padding='same', activation='relu'))
@@ -170,8 +169,8 @@ def create_model():
 
     return model
 
-
-def fit_model(): # training
+# training
+def fit_model(): 
     model_hist = model.fit(X_train, Y_train, batch_size=64, epochs=6, validation_split=0.1)
     # split training into smaller sanity check set with validation_split
     return model_hist
@@ -352,7 +351,7 @@ def bsl_output(outputlist):
         img = Image.open('/Users/Vani/PycharmProjects/ASLConverter/input/BSL/z.png')
         img.show()
 
-# trains and teaches 
+# TRAINING AND TEACHING  
 """
 print(os.listdir("/Users/Vani/PycharmProjects/ASLConverter/input"))
 
@@ -383,7 +382,7 @@ print("data about to be labeled")
 X_train, X_test, Y_train, Y_test, labels = label_data()
 print("data is labeled")
 
-labelsdf = pd.DataFrame() # pd = pandas. It's like excel, but for python
+labelsdf = pd.DataFrame() # pd = pandas. It's like excel, but for python!
 labelsdf["labels"] = labels # create a column called "labels" and fill it with our labels data
 labelsdf["labels"].value_counts().plot(kind="bar", figsize=(12, 3))  # plot a graph of how much of each label we have
 
@@ -394,7 +393,7 @@ curr_model_hist = fit_model()
 plot_accuracy(True)
 plot_loss(True)
 
-evaluate_metrics = model.evaluate(X_test, Y_test)  #how many times am I right
+evaluate_metrics = model.evaluate(X_test, Y_test)  #how many times are we right
 print("\nEvaluation Accuracy = ", "{:.2f}%".format(evaluate_metrics[1]*100), "\nEvaluation loss = " ,"{:.6f}".format(evaluate_metrics[0]))
 
 test_images, test_img_names = load_test_data()
@@ -442,3 +441,5 @@ outputImages, outputLabels = load_input_data()  # formats input data
 outputList = give_predictions(outputImages, model_implement)
 print(outputList)
 bsl_output(outputList)
+
+#COMPLETE! 
